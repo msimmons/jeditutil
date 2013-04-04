@@ -1,0 +1,46 @@
+#
+# Properties required by jedit
+#
+plugin.net.contrapt.jeditutil.UtilPlugin.name=jEdit Utils
+plugin.net.contrapt.jeditutil.UtilPlugin.author=Mark Simmons
+plugin.net.contrapt.jeditutil.UtilPlugin.version=${version}
+plugin.net.contrapt.jeditutil.UtilPlugin.docs=jeditutil.html
+plugin.net.contrapt.jeditutil.UtilPlugin.depend.0=jedit 04.02.01.00
+plugin.net.contrapt.jeditutil.UtilPlugin.activate=startup
+plugin.net.contrapt.jeditutil.UtilPlugin.jars=
+
+#
+# Define the menu
+#
+plugin.net.contrapt.jeditutil.UtilPlugin.menu = select-buffer select-recent select-action dump-shortcuts load-shortcuts show-properties mode-menu reinit
+
+select-buffer.label=Select Buffer
+select-recent.label=Select Recent File
+select-action.label=Execute Action
+dump-shortcuts.label=Dump Shortcuts to Buffer 
+load-shortcuts.label=Load Shortcuts from Buffer
+show-properties.label=Show Dynamic Properties
+mode-menu.label=Mode Specific Menu
+reinit.label=Reload Configuration
+focus-on-plugin-panel.label=Focus On Plugin Panel
+show-local-diff=Local Diff
+show-file-diff=File Diff
+show-completion-dialog.label=show-completion-dialog
+show-processes.label=show-processes
+navigate-forward.label=navigate-forward
+navigate-backward.label=navigate-backward
+
+#
+# Labels and Messages for use in dialogs
+#
+plugin.jeditutil.exec-action-error.title=Perform Action
+plugin.jeditutil.exec-action-error.message=Error executing {0}\n{1}
+
+plugin.jeditutil.reinit-error.title=Initializing Plugin
+plugin.jeditutil.reinit-error.message=Error reinitializing\n{1}
+
+#
+# Dockable properties
+#
+plugin.jeditutil.utility.title=Utility Panel
+plugin.jeditutil.utility.label=jeditutil-utility

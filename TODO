@@ -1,0 +1,34 @@
++ Using down-arrow to select list of values; handle escape on list
++ Fix project selection on value selector + keyboard shortcut
++ Extract keyboard shortcuts into a buffer to be saved as a separate properties file
++ Load keyboard shortcut property file and merge with existing properties
++ Context Sensitive Menu Service - sensitive to file type
++ Customizable menus: Global (use for phlp actions); Mode (mode specific menus); VCS (Version Control menu)
++ Change the border when the docked panel gets and loses focus
++ Buffer status panel should be tied to edit pane, not view
++ Fix ValueSelector list model so items can be removed and changed in the list dynamically
++ Indication of running processes in buffer status panel
++ "Process" list as popup dialog instead of dockable
++ Improve tail efficiency
++ Differentiate Servers and Tools
++ Reload buffer after JMeld (in case user has saved some changes, since jEdit does not detect this)
+
+* Use toolbar instead of menu for selector dialog actions
+* Selector shouldn't populate the view until user has typed something in; more sensible default wildcards; populate view with
+  list of recent choices; more status info on selected items
+* Support TASKS - named collection of buffers that can be opened and closed as a unit
+* Move error list to jeditutil, add suggestions, make all info available within textarea
+* Add more info to the process runner buffer panel
+* Use user-defined jEdit shortcut keys for navigation/editing in Value Selection (currently hardcoded ctrl+n, ctrl+p)
+* ALT-LEFT ALT-RIGHT style history navigation api provided to other plugings (with dropdown in buffer status panel)
+* Mode menus sensitive to not only mode but also "sub-mode": for instance, mode "xml" could be "hbm.xml" in which case we want
+  additional menu items? (or could we just create an hbm.xml mode and import the "xml" definition?)
+
+- Global menus have some mode sensitivity?
+- Implement completion framework or use SideKick?
+- Add option for case (in)sensitive search to value dialog
+
+- Where do i use this symbol (method/field/class/table/property)?
+- Where is this symbol (method/field/class/table/property) defined?
+- Describe this symbol (language specific)
+- Find a symbol

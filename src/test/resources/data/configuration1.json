@@ -1,0 +1,16 @@
+{
+"globalMenus": [
+   {"name": "menu1", "modes":["java","html"], "menuItems": [
+      {"name":"doit", "action": "doitAction","accelerator": "C-X", "separator": false, "menuItems": []},
+      {"name":"sep1", "action": "","accelerator": "", "separator": true, "menuItems": []},
+      {"name":"save", "action": "saveIt","accelerator": "C-s", "separator": false, "menuItems": [
+         {"name":"sub1", "action":"sub1Action","accelerator":"","separator":false,"menuItems":[]}
+      ]}
+   ]}
+],
+"modeMenus": [
+   {"name":"menu2", "modes":["*"],"menuItems":[
+      {"name":"oboy","action":"oboyAction","accelerator":"A-z","separator":false, "menuItems":[]}
+   ]}
+]
+}

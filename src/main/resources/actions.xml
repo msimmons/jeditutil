@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE ACTIONS SYSTEM "actions.dtd">
+
+<ACTIONS>
+
+    <ACTION NAME="select-buffer">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.BUFFERS);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="select-recent">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.RECENT);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="select-action">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.ACTIONS);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="dump-shortcuts">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.DUMP_KS);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="load-shortcuts">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.LOAD_KS);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="show-properties">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.SHOW_PROPERTIES);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="mode-menu">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.MODE_MENU);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="navigate-forward">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.FORWARD);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="navigate-backward">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.BACKWARD);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="reinit">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().reinit(view);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="focus-on-plugin-panel">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().focusOnPluginPanel(view);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="show-local-diff">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.LOCAL);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="show-file-diff">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.FILE_DIFF);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="show-processes">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.PROCESSES);
+       </CODE>
+    </ACTION>
+
+    <ACTION NAME="show-completion-dialog">
+       <CODE>
+          net.contrapt.jeditutil.UtilPlugin.getInstance().showCompletionDialog(view);
+       </CODE>
+    </ACTION>
+
+</ACTIONS>

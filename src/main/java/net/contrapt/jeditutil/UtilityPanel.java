@@ -2,17 +2,14 @@ package net.contrapt.jeditutil;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
+import net.contrapt.jeditutil.process.ProcessRunner;
 import org.gjt.sp.jedit.ServiceManager;
 import org.gjt.sp.jedit.gui.DefaultFocusComponent;
-import org.gjt.sp.jedit.EditBus;
 import org.gjt.sp.jedit.PluginJAR;
 
 /**

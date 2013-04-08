@@ -1,6 +1,5 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.selector;
 
-import java.lang.reflect.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;

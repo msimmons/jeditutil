@@ -1,4 +1,4 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.selector;
 
 import java.util.*;
 import java.io.File;

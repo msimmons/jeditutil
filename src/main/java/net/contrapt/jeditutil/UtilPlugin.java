@@ -1,5 +1,8 @@
 package net.contrapt.jeditutil;
 
+import net.contrapt.jeditutil.process.ProcessRunner;
+import net.contrapt.jeditutil.process.ProcessSelector;
+import net.contrapt.jeditutil.selector.*;
 import org.gjt.sp.jedit.*;
 import org.gjt.sp.jedit.msg.*;
 import org.gjt.sp.util.Log;
@@ -54,7 +57,6 @@ public class UtilPlugin extends EBPlugin {
       PROCESSES,
       DUMP_KS,
       LOAD_KS,
-      SHOW_PROPERTIES,
       MODE_MENU,
       REINIT,
       FORWARD,
@@ -186,9 +188,6 @@ public class UtilPlugin extends EBPlugin {
                break;
             case LOAD_KS:
                loadShortcuts(view);
-               break;
-            case SHOW_PROPERTIES:
-               showProperties(view);
                break;
             case MODE_MENU:
                showModeMenu(view);
@@ -330,7 +329,7 @@ public class UtilPlugin extends EBPlugin {
    /**
    * When a process starts running, update count of running/error processes
    */
-   static void processStarted() {
+   public static void processStarted() {
       if ( INSTANCE == null ) return;
       INSTANCE.updateEditPanePanel(jEdit.getActiveView().getEditPane(), false);
    }
@@ -339,7 +338,7 @@ public class UtilPlugin extends EBPlugin {
    * When a process has finished running, update buffer status on the current
    * buffer
    */
-   static void processFinished() {
+   public static void processFinished() {
       if ( INSTANCE == null ) return;
       INSTANCE.updateEditPanePanel(jEdit.getActiveView().getEditPane(), false);
    }
@@ -358,7 +357,7 @@ public class UtilPlugin extends EBPlugin {
    */
    private Buffer promptForBuffer(View view) {
       String bufferName = view.getBuffer().getName();
-      ValueSelector<Object,Buffer> selector = UtilSelector.getBufferSelector(switchFromBuffer);
+      ValueSelector<Object,Buffer> selector = new BufferSelector(switchFromBuffer);
       ValueSelectionDialog.open(view, selector);
       Buffer buf = selector.getSelectedObject();
       switchFromBuffer = (buf==null) ? switchFromBuffer : bufferName;
@@ -386,7 +385,7 @@ public class UtilPlugin extends EBPlugin {
    * Prompt user for a recent file
    */
    private BufferHistory.Entry promptForRecentFile(View view) {
-      ValueSelector<Object,BufferHistory.Entry> selector = UtilSelector.getRecentFileSelector(null);
+      ValueSelector<Object,BufferHistory.Entry> selector = new RecentSelector(null);
       ValueSelectionDialog.open(view, selector);
       return selector.getSelectedObject();
    }
@@ -405,7 +404,7 @@ public class UtilPlugin extends EBPlugin {
    * Prompt user for an action
    */
    private EditAction promptForAction(View view) {
-      ValueSelector<Object,EditAction> selector = UtilSelector.getActionSelector(lastAction);
+      ValueSelector<Object,EditAction> selector = new ActionSelector(lastAction);
       ValueSelectionDialog.open(view, selector);
       EditAction action = selector.getSelectedObject();
       if ( action != null ) lastAction = action.getName();
@@ -417,7 +416,7 @@ public class UtilPlugin extends EBPlugin {
    * version and current
    */
    private void showLocalDiff(View view) {
-      ValueSelector<Object,File> selector = UtilSelector.getBackupSelector(view.getBuffer().getPath());
+      ValueSelector<Object,File> selector = new BackupSelector(view.getBuffer().getPath());
       ValueSelectionDialog.open(view, selector);
       File backup = selector.getSelectedObject();
       if ( backup == null ) return;
@@ -446,7 +445,7 @@ public class UtilPlugin extends EBPlugin {
    * Choose a process from the list of running processes and show its output in a buffer
    */
    private void showProcesses(View view) {
-      ValueSelector<Object,ProcessRunner> selector = UtilSelector.getProcessSelector();
+      ValueSelector<Object,ProcessRunner> selector = new ProcessSelector();
       ValueSelectionDialog.open(view, selector);
       ProcessRunner runner = selector.getSelectedObject();
       if ( runner == null ) return;
@@ -495,30 +494,6 @@ public class UtilPlugin extends EBPlugin {
       //TODO Pop a dialog saying to click "OK" or "Apply" for changes to take place
       EditAction action = jEdit.getAction("global-options");
       action.invoke(view);
-   }
-
-   /**
-   * Show all provided and consumed properties from registerd property consumers
-   * TODO Show in a popup table instead of buffer
-   */
-   private void showProperties(View view) {
-      List<DynamicPropertyDescriptor> consumed = DynamicPropertyProvider.findConsumedProperties();
-      List<DynamicPropertyDescriptor> provided = DynamicPropertyProvider.findProvidedProperties();
-      Buffer buf = jEdit.newFile(view);
-      int offset = 0;
-      for ( DynamicPropertyDescriptor d : consumed ) {
-         String line = d.who+"\t"+d.name+"\t"+d.description+"\t"+d.role+"\n";
-         buf.insert(offset, line);
-         offset += line.length();
-      }
-      for ( DynamicPropertyDescriptor d : provided ) {
-         String line = d.who+"\t"+d.name+"\t"+d.description+"\t"+d.role+"\n";
-         buf.insert(offset, line);
-         offset += line.length();
-      }
-      buf.setDirty(false);
-      view.getTextArea().goToBufferStart(false);
-      buf.setReadOnly(true);
    }
 
    /**

@@ -1,5 +1,6 @@
 package net.contrapt.jeditutil;
 
+import net.contrapt.jeditutil.selector.CompletionSelector;
 import org.gjt.sp.jedit.View;
 
 /**

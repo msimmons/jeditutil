@@ -1,4 +1,4 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.process;
 
 import java.io.File;
 import java.util.Map;

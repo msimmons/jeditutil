@@ -1,20 +1,7 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.selector;
 
 import java.util.List;
 import java.util.ArrayList;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.ListCellRenderer;
-import javax.swing.JList;
-import java.awt.Component;
-import javax.swing.JLabel;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
-import javax.swing.KeyStroke;
-import java.io.FilenameFilter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.HashMap;
 

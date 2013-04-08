@@ -34,12 +34,6 @@
        </CODE>
     </ACTION>
 
-    <ACTION NAME="show-properties">
-       <CODE>
-          net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.SHOW_PROPERTIES);
-       </CODE>
-    </ACTION>
-
     <ACTION NAME="mode-menu">
        <CODE>
           net.contrapt.jeditutil.UtilPlugin.getInstance().performAction(view, net.contrapt.jeditutil.UtilPlugin.ActionEnum.MODE_MENU);

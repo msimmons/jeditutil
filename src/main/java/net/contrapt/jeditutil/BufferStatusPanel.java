@@ -1,31 +1,22 @@
 package net.contrapt.jeditutil;
 
 import javax.swing.JPanel;
-import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.border.Border;
 import java.awt.Color;
-import java.awt.KeyboardFocusManager;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import java.awt.Component;
-import javax.swing.BorderFactory;
-import javax.swing.border.LineBorder;
-import javax.swing.JTextField;
 import java.util.Map;
 import java.util.HashMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import java.awt.Dimension;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.net.URL;
 
-import org.gjt.sp.jedit.jEdit;
+import net.contrapt.jeditutil.process.ProcessRunner;
 import org.gjt.sp.jedit.textarea.JEditTextArea;
 import org.gjt.sp.jedit.EditPane;
 import org.gjt.sp.jedit.Buffer;

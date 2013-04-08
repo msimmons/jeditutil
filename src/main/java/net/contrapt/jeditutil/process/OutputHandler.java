@@ -1,4 +1,4 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.process;
 
 /**
 * A class that processes output from a running process; this could be filtering for 

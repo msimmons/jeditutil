@@ -1,4 +1,4 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.process;
 
 /**
 * A default implementation of <code>OutputHandler</code> which does nothing; used in case

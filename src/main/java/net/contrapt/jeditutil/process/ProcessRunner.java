@@ -1,4 +1,4 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.process;
 
 import java.io.*;
 import javax.swing.*;
@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.regex.Pattern;
 
+import net.contrapt.jeditutil.*;
 import org.gjt.sp.jedit.*;
 import org.gjt.sp.util.Log;
 
@@ -63,10 +64,7 @@ public class ProcessRunner implements Runnable {
 	/**
 	* Run the given process; send the output through the given output handler
 	*
-	* @param name The name of the process
-	* @param builder A process builder for the OS process
-	* @param handler An output handler to do whatever it wants with the command output
-	* @param display Whether to add this process to the visible list of running processes or not
+	* @param spec The process runner specification
 	*/
 	public static ProcessRunner create(ProcessRunnerSpec spec) {
 		ProcessRunner runner = new ProcessRunner(spec);
@@ -74,13 +72,13 @@ public class ProcessRunner implements Runnable {
 	}
 
 	/** Return the list model for the list of running processes */
-	static ListModel getListModel() { return listModel; }
+	public static ListModel getListModel() { return listModel; }
 
 	/** Return a mouse listeners for mouse events on the list */
-	static MouseListener getMouseListener() { return mouseListener; }
+	public static MouseListener getMouseListener() { return mouseListener; }
 
 	/** Return a key listener for the list of processes */
-	static KeyListener getKeyListener() { return keyListener; }
+	public static KeyListener getKeyListener() { return keyListener; }
 
 	/** 
 	* Set the maximum size of the process list; old processes are removed after list reaches this size
@@ -377,7 +375,7 @@ public class ProcessRunner implements Runnable {
 	/**
 	* Open or refresh the buffer for this process
 	*/
-	void loadBuffer() {
+   public void loadBuffer() {
 		if ( buffer == null || buffer.isClosed() ) toggleBuffer();
 		else reloadBuffer();
 	}

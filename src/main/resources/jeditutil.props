@@ -44,3 +44,7 @@ plugin.jeditutil.reinit-error.message=Error reinitializing\n{1}
 #
 plugin.jeditutil.utility.title=Utility Panel
 plugin.jeditutil.utility.label=jeditutil-utility
+
+plugin.jeditutil.errorlist.title=Error List
+plugin.jeditutil.errorlist.label=jeditutil-errorlist
+

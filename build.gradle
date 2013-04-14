@@ -20,8 +20,10 @@ dependencies {
 }
 
 processResources {
-   expand(project.properties)
-   exclude("icons/**")
+   from(sourceSets.main.resources) {
+      expand(project.properties)
+      exclude("icons/**")
+   }
 }
 
 test {

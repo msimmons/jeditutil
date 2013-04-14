@@ -55,9 +55,9 @@ import net.contrapt.jeditutil.errorlist.ErrorSource.Error;
 
 public class ErrorList extends JPanel implements EBComponent, DefaultFocusComponent {
 	public static final ImageIcon ERROR_ICON = new ImageIcon(
-		ErrorList.class.getResource("error.png"));
+		ErrorList.class.getResource("/icons/error.png"), "/icons/error.png");
 	public static final ImageIcon WARNING_ICON = new ImageIcon(
-		ErrorList.class.getResource("warning.png"));
+		ErrorList.class.getResource("/icons/warning.png"), "/icons/warning.png");
 
 	//{{{ data members
 	private View view;

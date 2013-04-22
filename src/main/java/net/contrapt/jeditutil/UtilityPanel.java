@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import net.contrapt.jeditutil.process.ProcessRunner;
+import net.contrapt.jeditutil.service.InfoTreeService;
 import org.gjt.sp.jedit.ServiceManager;
 import org.gjt.sp.jedit.gui.DefaultFocusComponent;
 import org.gjt.sp.jedit.PluginJAR;

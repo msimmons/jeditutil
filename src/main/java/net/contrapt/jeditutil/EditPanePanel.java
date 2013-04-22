@@ -2,17 +2,14 @@ package net.contrapt.jeditutil;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import javax.swing.JSplitPane;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
-import javax.swing.JComponent;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 
-import org.gjt.sp.jedit.gui.DefaultFocusComponent;
+import net.contrapt.jeditutil.pluginpanel.PluginPanel;
 import org.gjt.sp.jedit.EditPane;
 import org.gjt.sp.jedit.Buffer;
 import org.gjt.sp.jedit.View;

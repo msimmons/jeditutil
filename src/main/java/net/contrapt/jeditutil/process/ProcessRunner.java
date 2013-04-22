@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.util.regex.Pattern;
 
 import net.contrapt.jeditutil.*;
+import net.contrapt.jeditutil.pluginpanel.PluginPanel;
 import org.gjt.sp.jedit.*;
 import org.gjt.sp.util.Log;
 

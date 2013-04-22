@@ -16,7 +16,9 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import java.net.URL;
 
+import net.contrapt.jeditutil.pluginpanel.PluginPanel;
 import net.contrapt.jeditutil.process.ProcessRunner;
+import net.contrapt.jeditutil.service.BufferStatusService;
 import org.gjt.sp.jedit.textarea.JEditTextArea;
 import org.gjt.sp.jedit.EditPane;
 import org.gjt.sp.jedit.Buffer;

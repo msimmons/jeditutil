@@ -1,4 +1,4 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.service;
 
 import javax.swing.tree.TreeModel;
 import java.awt.event.KeyListener;

@@ -1,9 +1,10 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.pluginpanel;
 
 import java.awt.Component;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 
+import net.contrapt.jeditutil.UtilPlugin;
 import org.gjt.sp.jedit.View;
 import org.gjt.sp.jedit.textarea.TextArea;
 import org.gjt.sp.jedit.jEdit;
@@ -33,7 +34,7 @@ public abstract class PluginPanel extends JPanel {
    * @param view The view requesting the plugin panel
    */
    public static <P> P getPluginPanel(View view, Class<P> clazz) {
-      return (P)UtilPlugin.getInstance().getPluginPanel(view, clazz);
+      return (P) UtilPlugin.getInstance().getPluginPanel(view, clazz);
    }
 
    /**
@@ -125,14 +126,14 @@ public abstract class PluginPanel extends JPanel {
    /**
    * Store the text area for convenience
    */
-   final void setTextArea(TextArea textArea) {
+   final public void setTextArea(TextArea textArea) {
       this.textArea = textArea;
    }
 
    /**
    * Store the buffer associated with this panel
    */
-   final void setBuffer(Buffer buffer) {
+   final public void setBuffer(Buffer buffer) {
       this.buffer = buffer;
    }
 

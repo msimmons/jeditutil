@@ -1,8 +1,11 @@
 package net.contrapt.jeditutil;
 
+import net.contrapt.jeditutil.pluginpanel.DiffPluginPanel;
+import net.contrapt.jeditutil.pluginpanel.PluginPanel;
 import net.contrapt.jeditutil.process.ProcessRunner;
 import net.contrapt.jeditutil.process.ProcessSelector;
 import net.contrapt.jeditutil.selector.*;
+import net.contrapt.jeditutil.service.CompletionService;
 import org.gjt.sp.jedit.*;
 import org.gjt.sp.jedit.msg.*;
 import org.gjt.sp.util.Log;
@@ -245,7 +248,7 @@ public class UtilPlugin extends EBPlugin {
    * @param view The view requesting the plugin panel
    * @param clazz The class of plugin panel
    */
-   PluginPanel getPluginPanel(View view, Class clazz) {
+   public PluginPanel getPluginPanel(View view, Class clazz) {
       EditPanePanel ep = editPanePanels.get(view.getEditPane());
       if ( ep == null ) return null;
       return ep.getPluginPanel(view.getBuffer(), clazz);
@@ -255,7 +258,7 @@ public class UtilPlugin extends EBPlugin {
    * Add a dock panel to this view's current buffer
    * This method is called by client plugins to add a new panel
    */
-   void addPluginPanel(View view, PluginPanel panel) {
+   public void addPluginPanel(View view, PluginPanel panel) {
       EditPanePanel ep = editPanePanels.get(view.getEditPane());
       if ( ep == null ) return;
       ep.addPluginPanel(view.getBuffer(), panel);
@@ -265,7 +268,7 @@ public class UtilPlugin extends EBPlugin {
    /**
    * Remove the dock panel of the given class from the given buffer
    */
-   void removePluginPanel(Buffer buffer, Class cl) {
+   public void removePluginPanel(Buffer buffer, Class cl) {
       View view = jEdit.getActiveView();
       EditPanePanel ep = editPanePanels.get(view.getEditPane());
       if ( ep == null ) return;
@@ -278,7 +281,7 @@ public class UtilPlugin extends EBPlugin {
    * all of its dock panels
    * This method is called by client plugins to remove all panels that it added
    */
-   void removePluginPanels(Class cl) {
+   public void removePluginPanels(Class cl) {
       Log.log(Log.DEBUG, this, "removePluginPanels: "+cl);
       EditPanePanel ep = editPanePanels.get(jEdit.getActiveView().getEditPane());
       if ( ep == null ) return;

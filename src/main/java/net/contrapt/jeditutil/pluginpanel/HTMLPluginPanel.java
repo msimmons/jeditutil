@@ -1,7 +1,5 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.pluginpanel;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.awt.BorderLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;

@@ -1,11 +1,8 @@
-package net.contrapt.jeditutil;
+package net.contrapt.jeditutil.pluginpanel;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
 
 //import org.jmeld.ui.JMeldPanel;
 //import org.jmeld.ui.BufferDiffPanel;

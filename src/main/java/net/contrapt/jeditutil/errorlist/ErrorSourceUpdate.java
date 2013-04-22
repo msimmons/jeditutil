@@ -22,36 +22,47 @@ import org.gjt.sp.jedit.*;
 
 /**
  * Message that an error source has changed.
+ *
  * @author Slava Pestov
  */
-public class ErrorSourceUpdate extends EBMessage
-{
-   /** An error source has been added. */
+public class ErrorSourceUpdate extends EBMessage {
+   /**
+    * An error source has been added.
+    */
    public static final Object ERROR_SOURCE_ADDED = "ERROR_SOURCE_ADDED";
 
-   /** An error source has been removed. */
+   /**
+    * An error source has been removed.
+    */
    public static final Object ERROR_SOURCE_REMOVED = "ERROR_SOURCE_REMOVED";
 
-   /** An error has been added. */
+   /**
+    * An error has been added.
+    */
    public static final Object ERROR_ADDED = "ERROR_ADDED";
 
-   /** An error has been removed. */
+   /**
+    * An error has been removed.
+    */
    public static final Object ERROR_REMOVED = "ERROR_REMOVED";
 
-   /** All errors have been removed from this source. */
+   /**
+    * All errors have been removed from this source.
+    */
    public static final Object ERRORS_CLEARED = "ERRORS_CLEARED";
 
    /**
-   * Creates a new error source update message.
-   * @param source The message source
-   * @param what What changed
-   * @param errorSource The error source
-   * @param error The error. Null unless what is ERROR_ADDED or
-   * ERROR_REMOVED
-   */
+    * Creates a new error source update message.
+    *
+    * @param source      The message source
+    * @param what        What changed
+    * @param errorSource The error source
+    * @param error       The error. Null unless what is ERROR_ADDED or
+    *                    ERROR_REMOVED
+    */
    public ErrorSourceUpdate(ErrorSource errorSource, Object what, ErrorSource.Error error) {
       super(null);
-      if(what == null || errorSource == null)
+      if (what == null || errorSource == null)
          throw new NullPointerException("What and error source must be non-null");
 
       this.what = what;
@@ -60,30 +71,30 @@ public class ErrorSourceUpdate extends EBMessage
    }
 
    /**
-   * Returns what changed.
-   */
+    * Returns what changed.
+    */
    public Object getWhat() {
       return what;
    }
 
    /**
-   * Returns the error source.
-   */
+    * Returns the error source.
+    */
    public ErrorSource getErrorSource() {
       return errorSource;
    }
 
    /**
-   * Returns the error involved. Null if what is ERRORS_CLEARED.
-   */
+    * Returns the error involved. Null if what is ERRORS_CLEARED.
+    */
    public ErrorSource.Error getError() {
       return error;
    }
 
    public String paramString() {
       return super.paramString() + ",what=" + what
-         + ",errorSource=" + errorSource
-         + ",error=" + error;
+            + ",errorSource=" + errorSource
+            + ",error=" + error;
    }
 
    private Object what;

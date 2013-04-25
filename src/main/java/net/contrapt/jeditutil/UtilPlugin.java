@@ -586,10 +586,6 @@ public class UtilPlugin extends EBPlugin {
       else if ( message instanceof PluginUpdate ) handlePluginUpdate((PluginUpdate)message);
    }
 
-   //
-   // PRIVATE METHODS
-   //
-
    /**
    * Handle buffer update messages
    */

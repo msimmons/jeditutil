@@ -88,4 +88,11 @@
        </CODE>
     </ACTION>
 
+   <ACTION NAME="json2xml">
+      <CODE>
+         String xml = net.contrapt.jeditutil.JSONUtil.json2xml(view.getTextArea().getSelectedText());
+         if ( xml != null ) view.getTextArea().setSelectedText(xml, true);
+      </CODE>
+   </ACTION>
+
 </ACTIONS>

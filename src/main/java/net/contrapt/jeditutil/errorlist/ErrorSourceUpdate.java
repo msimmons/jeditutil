@@ -54,9 +54,8 @@ public class ErrorSourceUpdate extends EBMessage {
    /**
     * Creates a new error source update message.
     *
-    * @param source      The message source
+    * @param errorSource      The message source
     * @param what        What changed
-    * @param errorSource The error source
     * @param error       The error. Null unless what is ERROR_ADDED or
     *                    ERROR_REMOVED
     */

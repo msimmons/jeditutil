@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
+import javax.swing.plaf.SeparatorUI;
+import javax.swing.plaf.basic.BasicSeparatorUI;
 import java.net.URL;
 
 import net.contrapt.jeditutil.pluginpanel.PluginPanel;
@@ -196,7 +198,9 @@ public class BufferStatusPanel extends JPanel {
       }
 //      add(processLabel);
 //      add(errorLabel);
-      add(new JSeparator(JSeparator.VERTICAL));
+      JSeparator sep = new JSeparator(JSeparator.VERTICAL);
+      sep.setUI(new BasicSeparatorUI());
+      add(sep);
       // Add plugin components
       addPluginComponents(pane);
       // Create and add a border to the panel
@@ -222,6 +226,7 @@ public class BufferStatusPanel extends JPanel {
          add(component);
          add(new JSeparator(JSeparator.VERTICAL));
          components.put(service.getPluginJAR(), component);
+         revalidate();
       }
    }
 

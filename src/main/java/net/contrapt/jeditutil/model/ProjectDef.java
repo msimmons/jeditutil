@@ -21,5 +21,20 @@ public class ProjectDef extends BaseModel {
    @JsonProperty
    private List<String> exclusions;
 
+   @JsonProperty
+   private List<String> inclusions;
+
    protected ProjectDef() {}
+
+   public String getLocation() {
+      return location;
+   }
+
+   public List<String> getExclusions() {
+      return exclusions;
+   }
+
+   public List<String> getInclusions() {
+      return inclusions;
+   }
 }

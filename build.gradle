@@ -26,6 +26,12 @@ processResources {
    }
 }
 
+processTestResources {
+   from(sourceSets.test.resources) {
+      expand(project.properties)
+   }
+}
+
 test {
    systemProperty "testDataDir", "$buildDir/resources/test/data"
    testLogging.showStandardStreams = true

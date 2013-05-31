@@ -555,6 +555,8 @@ public class UtilPlugin extends EBPlugin {
       if ( message.getWhat() == BufferUpdate.CLOSED ) {
          removePluginPanels(message.getBuffer());
       }
+      if ( message.getWhat() == BufferUpdate.PROPERTIES_CHANGED ) {
+      }
    }
    
    /**

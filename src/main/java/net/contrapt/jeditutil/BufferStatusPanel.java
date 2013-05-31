@@ -36,11 +36,6 @@ import org.gjt.sp.jedit.GUIUtilities;
  */
 public class BufferStatusPanel extends JPanel {
    
-   /** LED icons for running processes */
-//   private static Icon GREEN_ON = getImageIcon("/icons/ball_green.gif");
-//   private static Icon GREEN_OFF = getImageIcon("/icons/white-square.jpg");
-//   private static Icon RED_ON = getImageIcon("/icons/ball_red.gif");
-
    /** Allow the user to choose which plugin provided panel to display with this buffer */
    private JButton panelChooser;
 
@@ -147,7 +142,7 @@ public class BufferStatusPanel extends JPanel {
       panelChooser.setEnabled(false);
       panelChooser.setToolTipText("Choose Plugin Panel");
       bufferLabel = new JLabel();
-      projectButton = new JButton("     -     ");
+      projectButton = new JButton("New Project");
       projectButton.setToolTipText("Current Project");
       serverLabels = new JLabel[PROCESS_COUNT];
       processLabels = new JLabel[PROCESS_COUNT];
@@ -157,12 +152,6 @@ public class BufferStatusPanel extends JPanel {
       for ( int i = 0; i < PROCESS_COUNT; i++ ) {
          processLabels[i] = new JLabel("");
       }
-//      processLabel = new JLabel("0");
-//      processLabel.setForeground(Color.GREEN);
-//      processLabel.setToolTipText("Number of running processes");
-//      errorLabel = new JLabel("0");
-//      errorLabel.setForeground(Color.RED);
-//      errorLabel.setToolTipText("Number of last 5 processes with errors");
       // Set the font on these components
 /*
       float baseFontSize = 12.0f;
@@ -177,7 +166,7 @@ public class BufferStatusPanel extends JPanel {
       // Add components
       setLayout(new FlowLayout(FlowLayout.LEFT));
       add(bufferLabel);
-      add(panelChooser);
+      //add(panelChooser);
       add(projectButton);
       for ( JLabel jl : serverLabels ) {
          add(jl);
@@ -185,8 +174,6 @@ public class BufferStatusPanel extends JPanel {
       for ( JLabel jl : processLabels ) {
          add(jl);
       }
-//      add(processLabel);
-//      add(errorLabel);
       JSeparator sep = new JSeparator(JSeparator.VERTICAL);
       sep.setUI(new BasicSeparatorUI());
       add(sep);

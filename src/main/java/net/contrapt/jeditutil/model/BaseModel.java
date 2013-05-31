@@ -22,6 +22,8 @@ public abstract class BaseModel {
    private static JsonFactory jsonFactory = new MappingJsonFactory();
 
    public static <T> T readData(String file, Class<T> theClass) throws IOException {
+      File f = new File (file);
+      if ( !f.exists() ) return null;
       JsonParser parser = jsonFactory.createJsonParser(new File(file));
       return parser.readValueAs(theClass);
    }

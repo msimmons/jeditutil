@@ -35,9 +35,6 @@ import net.contrapt.jeditutil.model.*;
 */
 public class UtilPlugin extends EBPlugin {
    
-   //
-   // PROPERTIES
-   //
    public static final String NAME = "jeditutil";
    public static final String PROPERTY_PREFIX = "plugin."+NAME;
    public static final String OPTION_PREFIX = "options."+NAME;
@@ -50,26 +47,16 @@ public class UtilPlugin extends EBPlugin {
 
    public static final String DATA_DIR = "jeditutil";
    public static final String DATA_FILE = "jeditutil.json";
+   public static final String PROJECT_FILE = "projects.json";
+   public static final String PROJECT_NAME_PROPERTY = NAME+".projectName";
 
-   public enum ActionEnum {
-      BUFFERS,
-      RECENT,
-      LOCAL,
-		FILE_DIFF,
-      ACTIONS,
-      PROCESSES,
-      DUMP_KS,
-      LOAD_KS,
-      MODE_MENU,
-      REINIT,
-      FORWARD,
-      BACKWARD
-   }
-   
    private static UtilPlugin INSTANCE;
    
    /** The configuration data */
    private ConfigurationData data;
+
+   /** The project data manager */
+   private ProjectManager projectManager;
 
    /** Are we initialized? */
    private boolean initialized = false;
@@ -89,14 +76,6 @@ public class UtilPlugin extends EBPlugin {
    /** A navigation history manager for forward and backward navigation */
    private NavigationHistoryManager navigationManager = new NavigationHistoryManager();
 
-   //
-   // CONSTRUCTORS
-   //
-   
-   //
-   // IMPLEMENT EditPlugin
-   //
-   
    /**
    * Startup routine; set the instance variable for use by others and create a repository
    */
@@ -111,26 +90,20 @@ public class UtilPlugin extends EBPlugin {
    */
    @Override
    public void stop() {
+      projectManager.shutdown();
       UtilityPanel.shutdown();
-      MenuAction.shutdown();
+      GlobalMenuSet.shutdown();
       INSTANCE = null;
+      initialized = false;
       //TODO write the data file
    }
    
-   //
-   // STATIC METHODS
-   //
-
    /**
    * Return the constructed instance of this plugin (as assigned in the start() method)
    */
    public static UtilPlugin getInstance() {
       return INSTANCE; 
    }
-
-   //
-   // PUBLIC METHODS
-   //
 
    /**
    * Initialize the plugin
@@ -140,84 +113,46 @@ public class UtilPlugin extends EBPlugin {
    public void init(View view) {
       if ( initialized ) return;
       if ( view == null ) view = jEdit.getActiveView();
-      String dataFile = ( jEdit.getSettingsDirectory() == null ) ? 
-         DATA_FILE : 
-         jEdit.getSettingsDirectory()+File.separator+DATA_DIR+File.separator+DATA_FILE;
-      Log.log(Log.DEBUG, this, "Starting jEdit Util using "+dataFile);
+      String settingsDir = jEdit.getSettingsDirectory() == null ? "." : jEdit.getSettingsDirectory();
+      openConfiguration(settingsDir);
+      initialized = true;
+      GlobalMenuSet.initialize(data.getGlobalMenus());
+      Log.log(Log.DEBUG, this, "Opening jeditutil projects file: " + PROJECT_FILE);
+      projectManager = new ProjectManager(settingsDir+File.separator+DATA_DIR+File.separator+PROJECT_FILE);
+      if ( view == null ) return;
+      for ( EditPane pane : view.getEditPanes() ) addEditPanePanel(pane);
+   }
+
+   /**
+    * Open the configuration data file
+    */
+   private void openConfiguration(String settingsDir) {
+      String dataFile = settingsDir+File.separator+DATA_DIR+File.separator+DATA_FILE;
+      Log.log(Log.DEBUG, this, "Opening jeditutil configuration file: "+dataFile);
       try {
          data = BaseModel.readData(dataFile, ConfigurationData.class);
       }
       catch (Exception e) {
-         if ( view == null ) {
-            Log.log(Log.DEBUG, this, "Error initializing plugin: "+e);
-            e.printStackTrace();
-         }
-         else handleException(view, REINIT_ERROR, new Object[] {});
+         Log.log(Log.ERROR, this, "Error opening configuration file", e);
       }
       if ( data == null ) data = new ConfigurationData();
-      initialized = true;
-      MenuAction.initialize(data.getGlobalMenus());
-      if ( view == null ) return;
-      for ( EditPane pane : view.getEditPanes() ) addEditPanePanel(pane);
    }
-   
+
    /**
    * Reinitialize the plugin
    */
    public void reinit(View view) {
-      initialized = false;
-      data = null;
-      MenuAction.shutdown();
-      init(view);
-   }
-   
-   /**
-   * Run the given action on the given file
-   */
-   public void performAction(View view, ActionEnum action) {
-      try {
-         switch ( action ) {
-            case BUFFERS:
-               switchToBuffer(view);
-               break;
-            case RECENT:
-               chooseRecentFile(view);
-               break;
-            case ACTIONS:
-               chooseAction(view);
-               break;
-            case DUMP_KS:
-               dumpShortcuts(view);
-               break;
-            case LOAD_KS:
-               loadShortcuts(view);
-               break;
-            case MODE_MENU:
-               showModeMenu(view);
-               break;
-            case LOCAL:
-               showLocalDiff(view);
-               break;
-            case FILE_DIFF:
-               showFileDiff(view);
-               break;
-            case PROCESSES:
-               showProcesses(view);
-               break;
-            case FORWARD:
-               navigateForwards(view);
-               break;
-            case BACKWARD:
-               navigateBackwards(view);
-               break;
-         }
-      }
-      catch (Exception e) {
-         e.printStackTrace();
-         handleException(view, EXEC_ACTION_ERROR, new Object[] {action, e.getMessage()+"\n"+e.getCause()});
-      }
+      stop();
+      start();
    }
 
+   /**
+    * Return the project manager
+    */
+   public ProjectManager getProjectManager() {
+      return projectManager;
+   }
+   
    /**
    * Show a code completion popup
    */
@@ -349,7 +284,7 @@ public class UtilPlugin extends EBPlugin {
    /**
    * Switch to the buffer selected by the user
    */
-   private void switchToBuffer(View view) {
+   public void switchToBuffer(View view) {
       Buffer buf = promptForBuffer(view);
       if ( buf == null ) return;
       view.goToBuffer(buf);
@@ -368,9 +303,33 @@ public class UtilPlugin extends EBPlugin {
    }
 
    /**
+    * Allow choice of a project file
+    */
+   public void chooseProjectFile(View view) {
+      ProjectCache cache = findProjectForBuffer(view.getBuffer());
+      FileSelector selector = new FileSelector("", projectManager, cache);
+      ValueSelectionDialog.open(view, selector);
+      File selected = selector.getSelectedObject();
+      if ( selected == null ) return;
+      Buffer buf = jEdit.openFile(view, selected.getAbsolutePath());
+      buf.setProperty(PROJECT_NAME_PROPERTY, selector.getParentKey());
+   }
+
+   /**
+    * Ensure that the given buffer points to its project and return the project
+    */
+   public ProjectCache findProjectForBuffer(Buffer buffer) {
+      String projectName = buffer.getStringProperty(PROJECT_NAME_PROPERTY);
+      File file = new File(buffer.getPath());
+      ProjectCache cache = projectName == null ? projectManager.findProjectForFile(file) : projectManager.findProject(projectName);
+      if ( cache != null ) buffer.setStringProperty(PROJECT_NAME_PROPERTY, cache.getProject().getName());
+      return cache;
+   }
+
+   /**
    * Allow choice of a recent file
    */
-   private void chooseRecentFile(View view) {
+   public void chooseRecentFile(View view) {
       BufferHistory.Entry entry = promptForRecentFile(view);
       if ( entry == null ) return;
       // Open the recent file and move to the caret position
@@ -378,7 +337,7 @@ public class UtilPlugin extends EBPlugin {
       try {
          view.getTextArea().setCaretPosition(entry.caret);
       }
-      catch (NullPointerException e) {
+      catch (Exception e) {
          // jEdit bug?
          Log.log(Log.DEBUG, this, "chooseRecentFile setCaretPosition(): "+e);
       }
@@ -396,7 +355,7 @@ public class UtilPlugin extends EBPlugin {
    /**
    * Allow user to choose an action and invoke it
    */
-   private void chooseAction(View view) {
+   public void chooseAction(View view) {
       EditAction action = promptForAction(view);
       if ( action == null ) return;
       // Invoke the action on this view
@@ -418,7 +377,7 @@ public class UtilPlugin extends EBPlugin {
    * Choose a local version of the current buffer and show a diff between
    * version and current
    */
-   private void showLocalDiff(View view) {
+   public void showLocalDiff(View view) {
       ValueSelector<Object,File> selector = new BackupSelector(view.getBuffer().getPath());
       ValueSelectionDialog.open(view, selector);
       File backup = selector.getSelectedObject();
@@ -432,7 +391,7 @@ public class UtilPlugin extends EBPlugin {
    /**
    * Show a diff between the current buffer and a user selected file
    */
-   private void showFileDiff(View view) {
+   public void showFileDiff(View view) {
    	File dir = new File(view.getBuffer().getDirectory());
 		JFileChooser chooser = new JFileChooser(dir);
 		if ( chooser.showOpenDialog(view) != JFileChooser.APPROVE_OPTION ) return;
@@ -447,7 +406,7 @@ public class UtilPlugin extends EBPlugin {
    /**
    * Choose a process from the list of running processes and show its output in a buffer
    */
-   private void showProcesses(View view) {
+   public void showProcesses(View view) {
       ValueSelector<Object,ProcessRunner> selector = new ProcessSelector();
       ValueSelectionDialog.open(view, selector);
       ProcessRunner runner = selector.getSelectedObject();
@@ -460,7 +419,7 @@ public class UtilPlugin extends EBPlugin {
    * name.  This allows moving keyboard shortcut definitions around to
    * other computers.
    */
-   private void dumpShortcuts(View view) {
+   public void dumpShortcuts(View view) {
       Enumeration<String> names = (Enumeration<String>)jEdit.getProperties().propertyNames();
       SortedSet<String> sortedNames = new TreeSet<String>();
       while ( names.hasMoreElements() ) {
@@ -486,7 +445,7 @@ public class UtilPlugin extends EBPlugin {
    * new shortcuts to take effect, you must open the global options and
    * click "OK" or "Apply" on the shortcuts tab.
    */
-   private void loadShortcuts(View view) {
+   public void loadShortcuts(View view) {
       Buffer buf = view.getBuffer();
       int lines = buf.getLineCount();
       for ( int i=0; i<lines; i++ ) {
@@ -503,7 +462,7 @@ public class UtilPlugin extends EBPlugin {
    * Create a custom context menu if there is one defined for the current buffer's
    * mode
    */
-   private void showModeMenu(View view) {
+   public void showModeMenu(View view) {
       String mode = view.getBuffer().getMode().getName();
       MenuDef def = findModeMenu(mode);
       if ( def == null ) return;
@@ -562,7 +521,7 @@ public class UtilPlugin extends EBPlugin {
    /**
    * Navigate forward
    */
-   private void navigateForwards(View view) {
+   public void navigateForwards(View view) {
       navigationManager.addEntry(view);
       navigationManager.navigateForwards(view);
    }
@@ -570,7 +529,7 @@ public class UtilPlugin extends EBPlugin {
    /**
    * Navigate backwards
    */
-   private void navigateBackwards(View view) {
+   public void navigateBackwards(View view) {
       navigationManager.addEntry(view);
       navigationManager.navigateBackwards(view);
    }

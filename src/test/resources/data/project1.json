@@ -1,6 +1,6 @@
 {
 "projects": [
-   {"name":"project1", "location":"${buildDir}/resources/test/data/project1", "exclusions":["build"], "inclusions":["build/reports"]},
+   {"name":"project1", "location":"${buildDir}/resources/test/data/project1", "exclusions":[".*/build"], "inclusions":[".*/build/reports"]},
    {"name":"project2", "location":"${buildDir}/resources/test/data/project2", "exclusions":[], "inclusions":[]}
 ]
 }

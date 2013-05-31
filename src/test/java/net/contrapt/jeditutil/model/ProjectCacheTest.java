@@ -32,8 +32,8 @@ public class ProjectCacheTest {
       ProjectDef project = projects.getProjects().get(0);
       ProjectCache cache = new ProjectCache(project);
       System.out.println(project);
-      assertEquals(cache.getDirectories().size(), 3, "Number of directories");
-      assertEquals(cache.getFiles().size(), 1, "Number of files");
+      assertEquals(cache.getDirectories().size(), 5, "Number of directories");
+      assertEquals(cache.getFiles().size(), 2, "Number of files");
    }
 
    @Test

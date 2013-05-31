@@ -13,7 +13,7 @@ import java.util.Collection;
  * An implementation of <code>EditAction</code> which dynamically creates
  * actions for global menu definitions
  */
-public class MenuAction extends EditAction {
+public class GlobalMenuSet extends EditAction {
 
 	private static final String NAME_PREFIX = "jeditutil-menu";
 	private static ActionSet actionSet;
@@ -23,7 +23,7 @@ public class MenuAction extends EditAction {
 	/**
 	 * Construct an action for the given menu
 	 */
-	public MenuAction(String menu) {
+	public GlobalMenuSet(String menu) {
 		super(NAME_PREFIX + "-" + menu);
 		this.menu = menu;
 	}
@@ -59,7 +59,7 @@ public class MenuAction extends EditAction {
 	public static void initialize(Collection<MenuDef> menus) {
 		actionSet = new ActionSet("Global Menus");
 		for (MenuDef menu : menus) {
-			MenuAction action = new MenuAction(menu.getName());
+			GlobalMenuSet action = new GlobalMenuSet(menu.getName());
 			actionSet.addAction(action);
 		}
 		jEdit.addActionSet(actionSet);

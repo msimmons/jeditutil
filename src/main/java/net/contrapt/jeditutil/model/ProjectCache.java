@@ -2,6 +2,7 @@ package net.contrapt.jeditutil.model;
 
 import java.io.File;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Caches live data about project
@@ -19,17 +20,25 @@ public class ProjectCache {
 
    private Map<String, File> files;
 
-   private Map<File, Set<String>> directoryContents;
+   private Map<File, Set<String>> directoryFileKeys;
 
    private Set<File> directories;
+
+   private List<Pattern> exclusions;
+
+   private List<Pattern> inclusions;
 
    public ProjectCache(ProjectDef project) {
       this.project = project;
       this.location = new File(project.getLocation());
-      files = new HashMap<String, File>();
+      files = new TreeMap<String, File>();
       directories = new HashSet<File>();
       directories.add(location);
-      directoryContents = new HashMap<File, Set<String>>();
+      directoryFileKeys = new HashMap<File, Set<String>>();
+   }
+
+   public ProjectDef getProject() {
+      return project;
    }
 
    public void clear() {
@@ -37,6 +46,7 @@ public class ProjectCache {
       directories.add(location);
       files.clear();
       lastCached = 0;
+      directoryFileKeys.clear();
    }
 
    public Set<File> getDirectories() {
@@ -55,9 +65,7 @@ public class ProjectCache {
    }
 
    public boolean isOutOfDate() {
-      System.out.println("lastCached: " + lastCached);
       for (File dir : directories) {
-         System.out.println("   " + dir + ": " + dir.lastModified());
          if (dir.lastModified() > lastCached) return true;
       }
       return false;
@@ -68,16 +76,25 @@ public class ProjectCache {
    }
 
    private boolean isExcluded(File dir) {
+      if ( exclusions == null ) exclusions = compileRegex(project.getExclusions());
+      if ( inclusions == null ) inclusions = compileRegex(project.getInclusions());
       String relativePath = dir.getPath().replace(location.getPath(), "");
-      for (String e : project.getExclusions()) {
-         if (relativePath.startsWith(e) || relativePath.startsWith(File.separator + e)) {
-            for (String i : project.getInclusions()) {
-               if (relativePath.startsWith(i) || relativePath.startsWith(File.separator + i)) return false;
-            }
-            return true;
-         }
+      if ( relativePath.startsWith(".") || relativePath.startsWith(File.separator+".")) return true;
+      for (Pattern i : inclusions) {
+         if ( i.matcher(relativePath).matches() ) return false;
+      }
+      for (Pattern e : exclusions) {
+         if ( e.matcher(relativePath).matches() ) return true;
       }
       return false;
+   }
+
+   private List<Pattern> compileRegex(List<String> regexes) {
+      List<Pattern> result = new ArrayList<Pattern>();
+      for ( String regex : regexes ) {
+         result.add(Pattern.compile(regex));
+      }
+      return result;
    }
 
    private boolean isChildDir(File dir) {
@@ -85,12 +102,9 @@ public class ProjectCache {
    }
 
    private void cacheDirectory(File dir) {
-      if (isExcluded(dir)) return;
-      else if (isChildDir(dir)) return;
-      else {
-         if (!directories.contains(dir)) directories.add(dir);
-         if (dir.lastModified() > lastCached) cacheFiles(dir);
-      }
+      if (isChildDir(dir)) return;
+      if (!directories.contains(dir)) directories.add(dir);
+      if (dir.lastModified() > lastCached) cacheFiles(dir);
    }
 
    private void cacheFiles(File dir) {
@@ -103,9 +117,9 @@ public class ProjectCache {
    }
 
    private void cacheFile(File dir, File file) {
-      if (file.isDirectory()) {
-         cacheDirectory(file);
-      } else {
+      if (file.isDirectory()) cacheDirectory(file);
+      else if ( isExcluded(dir) ) return;
+      else {
          String fileKey = createFileKey(file);
          files.put(fileKey, file);
          trackDirectoryContents(dir, fileKey);
@@ -113,16 +127,16 @@ public class ProjectCache {
    }
 
    private void trackDirectoryContents(File dir, String fileKey) {
-      Set<String> fileKeys = directoryContents.get(dir);
+      Set<String> fileKeys = directoryFileKeys.get(dir);
       if (fileKeys == null) fileKeys = new HashSet<String>();
       fileKeys.add(fileKey);
-      directoryContents.put(dir, fileKeys);
+      directoryFileKeys.put(dir, fileKeys);
    }
 
    private void removeDeletedFiles(File dir) {
-      if (directoryContents.get(dir) == null) return;
+      if (directoryFileKeys.get(dir) == null) return;
       List<String> removedKeys = new ArrayList<String>();
-      for (String fileKey : directoryContents.get(dir)) {
+      for (String fileKey : directoryFileKeys.get(dir)) {
          File file = files.get(fileKey);
          if (file == null) continue;
          if (!file.exists()) {
@@ -131,7 +145,7 @@ public class ProjectCache {
          }
       }
       for (String fileKey : removedKeys) {
-         directoryContents.get(dir).remove(fileKey);
+         directoryFileKeys.get(dir).remove(fileKey);
       }
    }
 

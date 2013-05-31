@@ -14,10 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
-import javax.swing.plaf.SeparatorUI;
 import javax.swing.plaf.basic.BasicSeparatorUI;
 import java.net.URL;
 
+import net.contrapt.jeditutil.model.ProjectCache;
 import net.contrapt.jeditutil.pluginpanel.PluginPanel;
 import net.contrapt.jeditutil.process.ProcessRunner;
 import net.contrapt.jeditutil.service.BufferStatusService;
@@ -36,9 +36,6 @@ import org.gjt.sp.jedit.GUIUtilities;
  */
 public class BufferStatusPanel extends JPanel {
    
-   //
-   // PROPERTIES
-   //
    /** LED icons for running processes */
 //   private static Icon GREEN_ON = getImageIcon("/icons/ball_green.gif");
 //   private static Icon GREEN_OFF = getImageIcon("/icons/white-square.jpg");
@@ -68,30 +65,21 @@ public class BufferStatusPanel extends JPanel {
    /** Displays the buffer name and icon */
    private JLabel bufferLabel;
 
+   /** Displays the project name */
+   private JButton projectButton;
+
    /** Stored the plugin provided status components */
    private Map<PluginJAR, JComponent> components;
 
    /** Collection of panel choices */
    private Collection<PluginPanel> panelChoices;
 
-
-   //
-   // CONSTRUCTORS
-   //
    /**
    * Create the status panel.  There is one per <code>EditPane</code>
    */
    public BufferStatusPanel(EditPane pane) {
       initialize(pane);
    }
-
-   //
-   // OVERRIDES
-   //
-
-   //
-   // PUBLIC METHODS
-   //
 
    /**
    * Rest the list of choices for plugin provided panels
@@ -111,6 +99,8 @@ public class BufferStatusPanel extends JPanel {
       bufferLabel.setText(buffer.getName());
       bufferLabel.setIcon(buffer.getIcon());
       bufferLabel.setToolTipText(buffer.getPath());
+      ProjectCache project = UtilPlugin.getInstance().findProjectForBuffer(buffer);
+      projectButton.setText(project == null ? "-" : project.getProject().getName());
       List<ProcessRunner> servers = ProcessRunner.getRunningServers();
       List<ProcessRunner> processes = ProcessRunner.getLastN(PROCESS_COUNT);
       int i = 0;
@@ -148,10 +138,6 @@ public class BufferStatusPanel extends JPanel {
       }
    }
 
-   //
-   // PRIVATE METHODS
-   //
-
    /**
    * Initialize variables and layout
    */
@@ -161,6 +147,8 @@ public class BufferStatusPanel extends JPanel {
       panelChooser.setEnabled(false);
       panelChooser.setToolTipText("Choose Plugin Panel");
       bufferLabel = new JLabel();
+      projectButton = new JButton("     -     ");
+      projectButton.setToolTipText("Current Project");
       serverLabels = new JLabel[PROCESS_COUNT];
       processLabels = new JLabel[PROCESS_COUNT];
       for ( int i = 0; i < PROCESS_COUNT; i++ ) {
@@ -190,6 +178,7 @@ public class BufferStatusPanel extends JPanel {
       setLayout(new FlowLayout(FlowLayout.LEFT));
       add(bufferLabel);
       add(panelChooser);
+      add(projectButton);
       for ( JLabel jl : serverLabels ) {
          add(jl);
       }

@@ -15,6 +15,7 @@ plugin.net.contrapt.jeditutil.UtilPlugin.jars=
 plugin.net.contrapt.jeditutil.UtilPlugin.menu = select-buffer select-recent select-action dump-shortcuts load-shortcuts show-properties mode-menu reinit
 
 select-buffer.label=Select Buffer
+select-file.label=Select Project File
 select-recent.label=Select Recent File
 select-action.label=Execute Action
 dump-shortcuts.label=Dump Shortcuts to Buffer 

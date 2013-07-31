@@ -15,16 +15,13 @@ public class JSONUtilTest {
          "    \"_inc\": 1767306696,\n" +
          "    \"_new\": false\n" +
          "  },\n" +
-         "  \"value\": \"    \",\n" +
          "  \"srNumber\": \"SR70090423170\",\n" +
          "  \"baseCost\": 515,\n" +
          "  \"costComponent\": {\n" +
-         "    \"value\": \"   \",\n" +
          "    \"name\": \"PRICE_EXPERIMENT\",\n" +
          "    \"amount\": 0\n" +
          "  },\n" +
          "  \"paymentInfo\": {\n" +
-         "    \"value\": \"             \",\n" +
          "    \"type\": \"charity\",\n" +
          "    \"source\": \"CHARITY\",\n" +
          "    \"sourceId\": 16,\n" +
@@ -36,7 +33,8 @@ public class JSONUtilTest {
          "    \"zip\": \"06902\",\n" +
          "    \"country\": \"United States\",\n" +
          "    \"isCharity\": true,\n" +
-         "    \"payableTo\": \"Sarah Morris\"\n" +
+         "    \"payableTo\": \"Sarah Morris\",\n" +
+         "    \"srNumber\": [\"SR1\",\"SR2\", \"SR3\"]"+
          "  },\n" +
          "  \"dbCollection\": \"itemAccepted\",\n" +
          "  \"headers\": {\n" +

@@ -21,19 +21,23 @@ public class JSONUtil {
    private static String json2xml(JsonParser parser) throws IOException {
       StringBuilder result = new StringBuilder();
       String currentParent = null;
-      while ( parser.nextToken()!=null ) {
-         JsonToken t = parser.nextValue();
-         String parent = (parser.getParsingContext().getParent()==null) ? null : parser.getParsingContext().getParent().getCurrentName();
-         if ( t.isScalarValue() ) {
-            if ( parent != currentParent ) {
-               result.append("</"+currentParent+">\n");
-               currentParent = null;
-            }
-            result.append("<"+parser.getCurrentName()+">"+parser.getText()+"</"+parser.getCurrentName()+">\n");
+      JsonToken nt;
+      String currentName="";
+      while ( (nt = parser.nextToken())!=null ) {
+         if ( nt.toString().equals("START_OBJECT")) {
+            result.append("<"+parser.getCurrentName()+">\n");
          }
-         else if ( t.toString().equals("START_OBJECT")) {
-            currentParent = parser.getCurrentName();
-            result.append("<"+currentParent+">\n");
+         else if ( nt.toString().equals("END_OBJECT")) {
+            result.append("</"+parser.getCurrentName()+">\n");
+         }
+         else if ( nt.toString().startsWith("VALUE_")) {
+            result.append("<"+currentName+">"+parser.getText()+"</"+currentName+">\n");
+         }
+         else if ( nt.toString().equals("START_ARRAY")) {
+            currentName = parser.getCurrentName();
+         }
+         else {
+            currentName = parser.getCurrentName();
          }
       }
       return result.toString();

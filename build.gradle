@@ -52,3 +52,7 @@ task deployPlugin(type:Copy, dependsOn: build) {
    from(jarFile)
    into("$jeditUser/jars")
 }
+
+task wrapper(type:Wrapper) {
+   gradleVersion='2.4'
+}

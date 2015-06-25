@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'maven'
 
 ext {
@@ -8,51 +9,55 @@ group = "net.contrapt"
 version = "2.0.0"
 
 repositories {
-   mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-   compile files("$jeditHome/jedit.jar"),
-         "org.codehaus.jackson:jackson-jaxrs:1.8.4",
-         "commons-lang:commons-lang:2.4"
+    compile files("$jeditHome/jedit.jar")
+    compile("org.codehaus.jackson:jackson-jaxrs:1.8.4")
+    compile("commons-lang:commons-lang:2.4")
 
-   testCompile "org.testng:testng:6.8.1"
+    testCompile("org.testng:testng:6.8.1")
+    testCompile("org.codehaus.groovy:groovy:2.3.3")
+    testCompile("org.spockframework:spock-core:0.7-groovy-2.0")
+    //testCompile("org.spockframework:spock-spring:0.7-groovy-2.0")
+
 }
 
 processResources {
-   from(sourceSets.main.resources) {
-      expand(project.properties)
-      exclude("icons/**")
-   }
+    from(sourceSets.main.resources) {
+        expand(project.properties)
+        exclude("icons/**")
+    }
 }
 
 processTestResources {
-   from(sourceSets.test.resources) {
-      expand(project.properties)
-   }
+    from(sourceSets.test.resources) {
+        expand(project.properties)
+    }
 }
 
 test {
-   systemProperty "testDataDir", "$buildDir/resources/test/data"
-   testLogging.showStandardStreams = true
-   useTestNG() {
-      excludeGroups 'gui'
-   }
+    systemProperty "testDataDir", "$buildDir/resources/test/data"
+    testLogging.showStandardStreams = true
+//    useTestNG() {
+//        excludeGroups 'gui'
+//    }
 }
 
 task guiTest(type: Test) {
-   testLogging.showStandardStreams = true
-   useTestNG() {
-      includeGroups 'gui'
-   }
+    testLogging.showStandardStreams = true
+    useTestNG() {
+        includeGroups 'gui'
+    }
 }
 
-task deployPlugin(type:Copy, dependsOn: build) {
-   def jarFile="$buildDir/libs/${project.name}-${project.version}.jar"
-   from(jarFile)
-   into("$jeditUser/jars")
+task deployPlugin(type: Copy, dependsOn: build) {
+    def jarFile = "$buildDir/libs/${project.name}-${project.version}.jar"
+    from(jarFile)
+    into("$jeditUser/jars")
 }
 
-task wrapper(type:Wrapper) {
-   gradleVersion='2.4'
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
 }

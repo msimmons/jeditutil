@@ -2,18 +2,8 @@ package net.contrapt.jeditutil.selector;
 
 import net.contrapt.jeditutil.model.ProjectCache;
 import net.contrapt.jeditutil.model.ProjectManager;
-import org.gjt.sp.jedit.Buffer;
-import org.gjt.sp.jedit.jEdit;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Allow selection of project files
